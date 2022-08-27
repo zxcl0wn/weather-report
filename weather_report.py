@@ -54,13 +54,14 @@ def get_weather(message):
               f"\nВремя рассвета: {sunrise}"
               f"\nВремя заката: {sunset}"
               f"\nПродолжительность дня: {lenth_of_the_day}")
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-        mark_yes = types.KeyboardButton("Да")
-        mark_no = types.KeyboardButton("Нет")
+        markup = types.InlineKeyboardMarkup()
+        mark_yes = types.InlineKeyboardButton("Да")
+        mark_no = types.InlineKeyboardMarkup("Нет")
         markup.add(mark_yes, mark_no)
         bot.send_message(message.chat.id, f"Какой-то другой город?", reply_markup=markup)
 
-    except:
+    except Exception as ex:
+        # print(ex)
         bot.send_message(message.chat.id, "Такого города не существует")
 
 bot.polling(none_stop=True)
