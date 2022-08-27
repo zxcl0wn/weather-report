@@ -20,7 +20,7 @@ def get_weather(message):
              f"https://api.openweathermap.org/data/2.5/weather?q={message.text}&appid={weather_token}&units=metric"
         )
         data = r.json()
-        pprint(data)
+        bot.send_message(message.chat.id, data)
 
         city = data['name']
         cur_weather = data['main']['temp']
