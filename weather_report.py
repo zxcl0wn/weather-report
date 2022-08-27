@@ -44,8 +44,9 @@ def get_weather(message):
             wd = type_of_weather[weather_discription]
         else:
             wd = "FUCK YOU"
-        # f"Сегодня: {datetime.now().strftime('%Y/%m/%d %H:%M')}"
-        bot.send_message(message.chat.id, f"\nПогода в городе {city}"
+        bot.send_message(message.chat.id,
+              f"Сегодня: {datetime.now().strftime('%Y/%m/%d %H:%M')}"
+              f"\nПогода в городе {city}"
               f"\nТемпература: {cur_weather} C°"
               f"\n{wd}"
               f"\nВлажность: {humidity} %"
