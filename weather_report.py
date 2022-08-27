@@ -63,6 +63,6 @@ def get_weather(message):
 
     except Exception as ex:
         # print(ex)
-        bot.send_message(message.chat.id, "Такого города не существует")
+        bot.send_message(message.chat.id, "Такого города не существуетааа")
 
 bot.polling(none_stop=True)
