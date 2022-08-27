@@ -20,7 +20,7 @@ def get_weather(message):
              f"https://api.openweathermap.org/data/2.5/weather?q={message.text}&appid={weather_token}&units=metric"
         )
         data = r.json()
-        # pprint(data)
+        pprint(data)
 
         city = data['name']
         cur_weather = data['main']['temp']
@@ -44,17 +44,17 @@ def get_weather(message):
             wd = type_of_weather[weather_discription]
         else:
             wd = "FUCK YOU"
-        bot.send_message(message.chat.id,
-              f"Сегодня: {datetime.now().strftime('%Y/%m/%d %H:%M')}"
-              f"\nПогода в городе {city}"
-              f"\nТемпература: {cur_weather} C°"
-              f"\n{wd}"
-              f"\nВлажность: {humidity} %"
-              f"\nДавление: {pressure} мм.рт.ст"
-              f"\nВетер: {wind} м/c"
-              f"\nВремя рассвета: {sunrise}"
-              f"\nВремя заката: {sunset}"
-              f"\nПродолжительность дня: {lenth_of_the_day}")
+        # bot.send_message(message.chat.id,
+        #       f"Сегодня: {datetime.now().strftime('%Y/%m/%d %H:%M')}"
+        #       f"\nПогода в городе {city}"
+        #       f"\nТемпература: {cur_weather} C°"
+        #       f"\n{wd}"
+        #       f"\nВлажность: {humidity} %"
+        #       f"\nДавление: {pressure} мм.рт.ст"
+        #       f"\nВетер: {wind} м/c"
+        #       f"\nВремя рассвета: {sunrise}"
+        #       f"\nВремя заката: {sunset}"
+        #       f"\nПродолжительность дня: {lenth_of_the_day}")
         markup = types.InlineKeyboardMarkup()
         mark_yes = types.InlineKeyboardButton("Да")
         mark_no = types.InlineKeyboardMarkup("Нет")
@@ -63,6 +63,6 @@ def get_weather(message):
 
     except Exception as ex:
         # print(ex)
-        bot.send_message(message.chat.id, "Такого города не существуетааа")
+        bot.send_message(message.chat.id, "Такого города не существует")
 
 bot.polling(none_stop=True)
