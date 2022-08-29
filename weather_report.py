@@ -22,22 +22,21 @@ def get_weather(message):
              f"https://api.openweathermap.org/data/2.5/weather?q={message.text}&appid={weather_token}&units=metric&lang=ru"
         )
         data = r.json()
-        # bot.send_message(message.chat.id, data['weather'][0]['main'])
 
         city = data['name']
         cur_weather = data['main']['temp']
         humidity = data['main']['humidity']
         pressure = data['main']['pressure']
         wind = data['wind']['speed']
-        sunrise = datetime.fromtimestamp(data['sys']['sunrise']).strftime('%H:%M')
-        sunset = datetime.fromtimestamp(data['sys']['sunset']).strftime('%H:%M')
+        sunrise = datetime.fromtimestamp(data['timezone'] + data['sys']['sunrise']).astimezone(pytz.timezone('Etc/GMT')).strftime('%H:%M')
+        sunset = datetime.fromtimestamp(data['timezone'] + data['sys']['sunset']).astimezone(pytz.timezone('Etc/GMT')).strftime('%H:%M')
         lenth_of_the_day = datetime.fromtimestamp(data['sys']['sunset']) - datetime.fromtimestamp(data['sys']['sunrise'])
         type_of_weather = {
             "Thunderstorm": 'Гроза \U0001F329',
             "Drizzle": 'Морось \U0001F4A7',
             "Rain":  'Дождь \U00002614',
             "Snow": 'Снег \U00002744',
-            "Clouds": 'Облачно \U000026C5',
+            "Clouds": 'Облачно \U00002601',
             "Clear": 'Ясно \U00002600',
             "Smoke": 'Туман \U0001F32B',
             "Mist": 'Туман \U0001F32B'
@@ -58,12 +57,7 @@ def get_weather(message):
               f"\nВремя рассвета: {sunrise}"
               f"\nВремя заката: {sunset}"
               f"\nПродолжительность дня: {lenth_of_the_day}")
-              # f"{datetime.fromtimestamp(message.chat.id, data['timezone'] + data['sys']['sunrise'])}")
 
-        bot.send_message(message.chat.id, f" Рассвет) {str(datetime.fromtimestamp(data['timezone'] + data['sys']['sunrise']).astimezone(pytz.timezone('Etc/GMT')))}")
-        # bot.send_message(message.chat.id, f" Рассвет) {str(datetime.fromtimestamp(data['timezone']) + datetime.fromtimestamp(data['sys']['sunrise']))}")
-        # bot.send_message(message.chat.id, f" 2) {str(datetime.fromtimestamp(data['timezone']))}")
-        bot.send_message(message.chat.id, )
         markup = types.InlineKeyboardMarkup()
         mark_yes = types.InlineKeyboardButton("Да")
         mark_no = types.InlineKeyboardMarkup("Нет")
@@ -72,6 +66,6 @@ def get_weather(message):
 
     except Exception as ex:
         print(ex)
-        bot.send_message(message.chat.id, "Такого города не существует")
+        bot.send_message(message.chat.id, "Такого города не существует!!!")
 
 bot.polling(none_stop=True)
