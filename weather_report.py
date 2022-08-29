@@ -4,7 +4,7 @@ from config import tg_bot_token, weather_token
 from telebot import types
 import telebot
 import pytz
-
+from time import *
 
 bot = telebot.TeleBot(tg_bot_token)
 @bot.message_handler(commands=['start'])
@@ -30,7 +30,6 @@ def get_weather(message):
         wind = data['wind']['speed']
         sunrise = datetime.fromtimestamp(data['timezone'] + data['sys']['sunrise']).astimezone(pytz.timezone('Etc/GMT')).strftime('%H:%M')
         sunset = datetime.fromtimestamp(data['timezone'] + data['sys']['sunset']).astimezone(pytz.timezone('Etc/GMT')).strftime('%H:%M')
-        lenth_of_the_day = datetime.fromtimestamp(data['sys']['sunset']) - datetime.fromtimestamp(data['sys']['sunrise'])
         type_of_weather = {
             "Thunderstorm": 'Гроза \U0001F329',
             "Drizzle": 'Морось \U0001F4A7',
@@ -47,16 +46,16 @@ def get_weather(message):
         else:
             wd = "FUCK YOU"
         bot.send_message(message.chat.id,
-              f"Сегодня: {datetime.now().strftime('%Y/%m/%d %H:%M')}"
-              f"\nПогода в городе {city}"
+              # f"{datetime.fromtimestamp(data['timezone'] + int(mktime(datetime.now().timetuple()) * 1000)).astimezone(pytz.timezone('Etc/GMT')).strftime('%H:%M')}"
+              # f"{datetime.utcfromtimestamp(int(mktime(datetime.now().timetuple()) * 1000) + data['timezone']).strftime('%H:%M')}"
+              f"Сейчас в городе {city} {datetime.fromtimestamp(mktime(datetime.now(pytz.timezone('Etc/GMT')).timetuple()) + data['timezone']).strftime('%H')} часов {datetime.fromtimestamp(mktime(datetime.now(pytz.timezone('Etc/GMT')).timetuple()) + data['timezone']).strftime('%M')} минут"
               f"\nТемпература: {cur_weather} C°"
               f"\n{wd}"
               f"\nВлажность: {humidity} %"
               f"\nДавление: {pressure} мм.рт.ст"
               f"\nВетер: {wind} м/c"
               f"\nВремя рассвета: {sunrise}"
-              f"\nВремя заката: {sunset}"
-              f"\nПродолжительность дня: {lenth_of_the_day}")
+              f"\nВремя заката: {sunset}")
 
         markup = types.InlineKeyboardMarkup()
         mark_yes = types.InlineKeyboardButton("Да")
