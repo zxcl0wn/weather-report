@@ -12,9 +12,6 @@ bot = telebot.TeleBot(tg_bot_token)
 @bot.message_handler(commands=['start'])
 def start_command(message):
     bot.send_message(message.chat.id, f"Как тебя зовут?")
-
-
-
     @bot.message_handler(content_types=['text'])
     def greeting(message):
         global mes
