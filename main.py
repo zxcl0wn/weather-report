@@ -1,28 +1,23 @@
-import pytz
-import datetime as dt
-# pytz.
-print('Часовые пояса, поддерживаемые модулем pytz: \n', pytz.all_timezones, '\n ')
-qwe = pytz.all_timezones
-print(qwe)
-source_date = dt.datetime.now()
+import sqlite3
 
+def start_command(message):
+    connect = sqlite3.connect('qwe.db')
+    cursor = connect.cursor()
 
-currentTimeZone = pytz.timezone('MST')# print(source_date, currentTimeZone)
+    cursor.execute("""CREATE TABLE IF NOT EXISTS login_id(
+        id INTEGER
+    )""")
 
-currentDateWithTimeZone = currentTimeZone.localize(source_date)
-print(f'Дата и время этого часового пояса:'
-      f'\n{currentDateWithTimeZone}')
+    connect.commit()
 
+    people_id = message.chat.id
 
-newTimeZone = pytz.timezone('Europe/Moscow')
-print('\n Часовой пояс установлен на: \n',newTimeZone)
-
-
-
-# Прочитать и распечатать текущую дату и время нового часового пояса
-newDateWithTimezone = currentDateWithTimeZone.astimezone(newTimeZone)
-print('Дата и время этого часового пояса: \n', newDateWithTimezone)
-
-# Прочитать дату и время указанного часового пояса
-print('\n Datetime of UTC Time-zone:', dt.datetime.now(tz=currentTimeZone))
-print('Datetime часового пояса IST:', dt.datetime.now(tz=newTimeZone))
+    cursor.execute(f"SELECT id FROM login_id WHERE id = {people_id}")
+    data = cursor.fetchone()
+    if data is None:
+        # add values in fields
+        user_id = [message.chat.id]
+        cursor.execute(f"INSERT INTO login_id VALUES(?);", user_id)
+        connect.commit()
+    else:
+        bot.send_message(message.chat.id, "Такой пользователь уже есть")
